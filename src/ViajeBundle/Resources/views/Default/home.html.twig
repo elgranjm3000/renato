@@ -23,6 +23,11 @@
 	</section>
 	<section id="works"></section>
 	<input type="text" id="direccion" name="direccion" placeholder="Escribe para autocompletar..."/> 
+
+   <div id="map_calculation_result_container">
+                        <div id="lineLength"></div>
+                        <div id="polyArea"></div>
+                    </div>
 	<div id="map_canvas" class="map_canvas" style="margin-top:22px;width:100%;height:450px;box-shadow: 0px 1px 2px 0px rgba(185,184,184,0.75);"></div>
 
 	<div class="container">
@@ -75,56 +80,63 @@
 			</div><! --/row -->
 		</div><! --/container -->
 	</div><! --/social -->
-	<script>
-     //Declaramos las variables que vamos a user
+
+
+{% endblock %}
+
+  
+{% block javascripts %}
+<script>
 var lat = null;
 var lng = null;
 var map = null;
 var geocoder = null;
 var marker = null;
-     
 
-   
-   
+var map = null;
+var default_lat = 40.14528997427982;
+var default_lng = -2.9582043750000366;
+var default_zoom = 7;
+var map_div = "map_canvas";
+var measure;
+var length_mode = "distance";
 
-jQuery(document).ready(function(){
-
+  jQuery(document).ready(function(){
  
-
      //lng = document.getElementsByName("milongitud")[0].value;
      //lat = document.getElementsByName("milatitud")[0].value;
      //obtenemos los valores en caso de tenerlos en un formulario ya guardado en la base de datos
      //lat = jQuery('#lat').val();
      //lng = jQuery('#long').val();
-
-
      //Asignamos al evento click del boton la funcion codeAddress
     
      //Inicializamos la función de google maps una vez el DOM este cargado
     initialize();
-
-
     // Create the search box and link it to the UI element.
         var input = document.getElementById('direccion');
         var searchBox = new google.maps.places.SearchBox(input);
         //map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-
  searchBox.addListener('places_changed', function() {
-
      codeAddress();
             
  //document.getElementsByName("ubicacion")[0].value = document.getElementById("direccion").value;      
       return false;
  });
-
       
-
 });
-
    
     function initialize() {
-    	alert();
+      
+      //alert();
      
+measure = {
+        mvcLine: new google.maps.MVCArray(),
+        mvcPolygon: new google.maps.MVCArray(),
+        mvcMarkers: new google.maps.MVCArray(),
+        line: null,
+        polygon: null
+    };
+
       geocoder = new google.maps.Geocoder();
         
        //Si hay valores creamos un objeto Latlng
@@ -135,7 +147,7 @@ jQuery(document).ready(function(){
       else
       {
         //Si no creamos el objeto con una latitud cualquiera como la de Mar del Plata, Argentina por ej
-         var latLng = new google.maps.LatLng(40.4167754,-3.7037901999999576);
+         var latLng = new google.maps.LatLng(45.934173765303,7.0985534404756);
 //40.4381311,-3.819622,11
       }
       //Definimos algunas opciones del mapa a crear
@@ -152,15 +164,15 @@ jQuery(document).ready(function(){
             map: map,//el mapa creado en el paso anterior
             position: latLng,//objeto con latitud y longitud
             draggable: true, //que el marcador se pueda arrastrar
-            icon: "{{ asset('/ico/indice.png') }}"
+            //icon: "{{ asset('/ico/indice.png') }}"
         });
         
+
+
        //función que actualiza los input del formulario con las nuevas latitudes
        //Estos campos suelen ser hidden
  
-
 var infoWindow = new google.maps.InfoWindow({map: map});
-
         // Try HTML5 geolocation.
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(function(position) {
@@ -168,7 +180,6 @@ var infoWindow = new google.maps.InfoWindow({map: map});
               lat: position.coords.latitude,
               lng: position.coords.longitude
             };
-
             updatePosition(pos);
             infoWindow.setPosition(pos);
             infoWindow.setContent('Location found.');
@@ -180,22 +191,27 @@ var infoWindow = new google.maps.InfoWindow({map: map});
           // Browser doesn't support Geolocation
           handleLocationError(false, infoWindow, map.getCenter());
           updatePosition(latLng);
-
         }
-
-
        
          
+ var input = document.getElementById('direccion');
+        var searchBox = new google.maps.places.SearchBox(input);
+       // map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+ searchBox.addListener('places_changed', function() {
+     codeAddress();
+            
+ //document.getElementsByName("ubicacion")[0].value = document.getElementById("direccion").value;      
+      return false;
+ });
+
          
     }
-
     function handleLocationError(browserHasGeolocation, infoWindow, pos) {
         infoWindow.setPosition(pos);
         infoWindow.setContent(browserHasGeolocation ?
                               'Ayuda: Mueve el marcador para reubicar' :
                               'Error: Your browser doesn\'t support geolocation.');
       }
-
      
     //funcion que traduce la direccion en coordenadas
     function codeAddress() {
@@ -214,6 +230,8 @@ var infoWindow = new google.maps.InfoWindow({map: map});
             //actualizo el formulario      
             updatePosition(results[0].geometry.location);
              
+
+            placeMarker(results[0].geometry.location);
             //Añado un listener para cuando el markador se termine de arrastrar
             //actualize el formulario con las nuevas coordenadas
             google.maps.event.addListener(marker, 'dragend', function(){
@@ -232,10 +250,129 @@ var infoWindow = new google.maps.InfoWindow({map: map});
        
        //jQuery('#lat').val(latLng.lat());
        //jQuery('#long').val(latLng.lng());
-
-          document.getElementsByName("milongitud")[0].value = latLng.lat();
-     document.getElementsByName("milatitud")[0].value = latLng.lng();
+          //document.getElementsByName("milongitud")[0].value = latLng.lat();
+     //document.getElementsByName("milatitud")[0].value = latLng.lng();
    
   }
+
+  function placeMarker(latLng) {
+     alert("placemaker");
+    var marker = new google.maps.Marker({map: map, position: latLng, draggable: true});
+    measure.mvcLine.push(latLng);
+    measure.mvcPolygon.push(latLng);
+    measure.mvcMarkers.push(marker);
+    var latLngIndex = measure.mvcLine.getLength() - 1;
+    google.maps.event.addListener(marker, "drag", function(evt) {
+        measure.mvcLine.setAt(latLngIndex, evt.latLng);
+        measure.mvcPolygon.setAt(latLngIndex, evt.latLng);
+    });
+    google.maps.event.addListener(marker, "dragend", function() {
+        if (measure.mvcLine.getLength() > 1) {
+            compute_length();
+        }
+    });
+
+    display_polygon_line();
+}
+
+
+function display_polygon_line() {
+
+
+    if (measure.mvcLine.getLength() > 1) {
+        if (!measure.line) {
+            measure.line = new google.maps.Polyline({
+                map: map,
+                clickable: false,
+                strokeColor: "#FF0000",
+                strokeOpacity: 1,
+                strokeWeight: 3,
+                path: measure.mvcLine
+            });
+        }
+
+        if (measure.mvcPolygon.getLength() > 2) {
+
+            if (measure.polygon != null)
+            {
+                measure.polygon.setMap(null);
+            }
+
+            if (length_mode != "distance")
+            {
+                measure.polygon = new google.maps.Polygon({
+                    clickable: false,
+                    map: map,
+                    fillOpacity: 0.25,
+                    strokeOpacity: 0,
+                    paths: measure.mvcPolygon
+                });
+            }
+            else
+            {
+                measure.polygon = new google.maps.Polygon({
+                    clickable: false,
+                    map: map,
+                    fillOpacity: 0.0,
+                    strokeOpacity: 0,
+                    paths: measure.mvcPolygon
+                });
+            }
+        }
+    }
+    if (measure.mvcLine.getLength() > 1) {
+        compute_length();
+    }
+}
+
+
+function compute_length() {
+  alert("compute");
+    var length = 0;
+    if (measure.mvcPolygon.getLength() > 1) {
+        length = google.maps.geometry.spherical.computeLength(measure.line.getPath());
+    }
+    var area = 0;
+    if (measure.mvcPolygon.getLength() > 2) {
+        area = google.maps.geometry.spherical.computeArea(measure.polygon.getPath());
+    }
+//    lM = document.forms["mb"].elements["mode"][0].checked;
+
+    if (length_mode === "distance") {
+        var km = length / 1000;
+        var feet = length * 3.2808399;
+        var yards = length * 1.0936133;
+        var miles = length * 0.000621371192;
+        var unit = " metros";
+        var unit1 = " millas";
+        var unit2 = " kilÃ³metros";
+        var unit3 = " pies";
+        var unit4 = " yardas";
+        document.getElementById('lineLength').innerHTML = "<strong>Distancia total:</strong><br />" + length.toFixed(0) + unit + "<br />" + km.toFixed(3) + unit2
+                + "<br />" + feet.toFixed(0) + unit3 + "<br />" + yards.toFixed(0) + unit4 + "<br />" + miles.toFixed(3) + unit1;
+        document.getElementById('polyArea').innerHTML = '';
+    }
+    else {
+        var km = area / (1000 * 1000);
+        var feet = area * 10.7639104;
+        var yards = area * 1.19599005;
+        var acres = area * 0.000247105381;
+        var unit = " metros&sup2;";
+        var unit1 = " acres";
+        var unit2 = " kilÃ³metros&sup2;";
+        var unit3 = " pies&sup2;";
+        var unit4 = " yardas&sup2;";
+        document.getElementById('polyArea').innerHTML = "<strong>Ãrea:</strong><br />" + area.toFixed(0) + unit + "<br />" + km.toFixed(3) + unit2
+                + "<br />" + feet.toFixed(0) + unit3 + "<br />" + yards.toFixed(0) + unit4 + "<br />" + acres.toFixed(3) + unit1;
+        document.getElementById('lineLength').innerHTML = '';
+    }
+}
  </script>
+
+<!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDaznzv0sICn4A8bWY0AmH_muSuYfxp3iw&libraries=places" 
+  type="text/javascript" async defer></script>-->
+  <script  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDuZZ1ZHMB8j0bXsWxy5wSPEcyW2WUvfIA&callback=initialize&libraries=places"
+        async defer></script>
+        <script src="https://maps.google.com/maps/api/js?sensor=false&language=en&libraries=geometry"></script>
+
 {% endblock %}

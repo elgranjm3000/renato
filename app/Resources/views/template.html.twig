@@ -20,8 +20,7 @@
   href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="http://miguelmanchego.com/samples/2014/waypoints.min.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDaznzv0sICn4A8bWY0AmH_muSuYfxp3iw&libraries=places" 
-  type="text/javascript" async defer></script>
+
         <script type="text/javascript">
     jQuery(function($) { 
         $('#headerwrap2').waypoint(function() {
@@ -102,5 +101,10 @@
     
     <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
 
+
+  {% block javascripts %}
+  {% endblock %}
+
+  
   </body>
 </html>
