@@ -4,7 +4,7 @@
 	<div id="headerwrap">
 	    <div class="container">
 			<div class="row">
-				<div class="col-lg-6 col-lg-offset-3">
+				<div class="col-lg-6 col-lg-offset-3" id="titleprincipal">
 					<h4>VIAJE CON NOSOTRO</h4>
 					<h1>DE FORMA SEGURA</h1>
 					
@@ -22,6 +22,10 @@
 	</div><! --/headerwrap -->
 	</section>
 	<section id="works"></section>
+
+	<div class="container">
+		<div class="row centered mt mb">
+			<h1 id="title1">Seleccione su Ruta de Preferencia</h1>
 	<input type="text" id="direccion" name="direccion" placeholder="Escribe para autocompletar..."/> 
 
    <div id="map_calculation_result_container">
@@ -30,11 +34,18 @@
                     </div>
 	<div id="map_canvas" class="map_canvas" style="margin-top:22px;width:100%;height:450px;box-shadow: 0px 1px 2px 0px rgba(185,184,184,0.75);"></div>
 
+		</div>
+	</div>
 	<div class="container">
 		<div class="row centered mt mb">
-			<h1>My Portfolio</h1>
-			
-			<div class="col-lg-4 col-md-4 col-sm-4 gallery">
+			<h1 id="title2">Seleccione su Vehiculo de Preferencia</h1>
+				<select id="carro_id">
+					<option></option>
+			      {% for carro in carros %}
+			      		<option  value="{{ carro.id }}">{{carro.marca}}</option>
+			      {% endfor %}
+				</select>
+			<!--<div class="col-lg-4 col-md-4 col-sm-4 gallery">
 				<a href="work.html"><img src="assets/img/portfolio/folio01.png" class="img-responsive"></a>
 			</div>
 			<div class="col-lg-4 col-md-4 col-sm-4 gallery">
@@ -51,7 +62,37 @@
 			</div>
 			<div class="col-lg-4 col-md-4 col-sm-4 gallery">
 				<a href="work.html"><img src="assets/img/portfolio/folio06.png" class="img-responsive"></a>
+			</div>-->
+
+
+		</div><! --/row -->
+	</div><! --/container -->
+
+
+	<div class="container">
+		<div class="row centered mt mb">
+			<h1 id="title3">Seleccione su Hotel de Preferencia</h1>
+			
+			<!--<div class="col-lg-4 col-md-4 col-sm-4 gallery">
+				<a href="work.html"><img src="assets/img/portfolio/folio01.png" class="img-responsive"></a>
 			</div>
+			<div class="col-lg-4 col-md-4 col-sm-4 gallery">
+				<a href="work.html"><img src="assets/img/portfolio/folio02.png" class="img-responsive"></a>
+			</div>
+			<div class="col-lg-4 col-md-4 col-sm-4 gallery">
+				<a href="work.html"><img src="assets/img/portfolio/folio03.png" class="img-responsive"></a>
+			</div>
+			<div class="col-lg-4 col-md-4 col-sm-4 gallery">
+				<a href="work.html"><img src="assets/img/portfolio/folio04.png" class="img-responsive"></a>
+			</div>
+			<div class="col-lg-4 col-md-4 col-sm-4 gallery">
+				<a href="work.html"><img src="assets/img/portfolio/folio05.png" class="img-responsive"></a>
+			</div>
+			<div class="col-lg-4 col-md-4 col-sm-4 gallery">
+				<a href="work.html"><img src="assets/img/portfolio/folio06.png" class="img-responsive"></a>
+			</div>-->
+
+
 		</div><! --/row -->
 	</div><! --/container -->
 	
@@ -102,6 +143,54 @@ var measure;
 var length_mode = "distance";
 
   jQuery(document).ready(function(){
+
+
+  	$("#carro_id").change(function() {
+    alert(this.value);                            
+        var valor = this.value;
+                            var data = {id: valor};
+
+                        /*    if(valor != '')
+                                {
+                                    
+                                    $.ajax
+                                        ({
+                                            type: 'POST',
+                                            url: "",
+                                            data: data,
+                                            dataType: 'json',
+                                             beforeSend: function(){
+                                                //imagen de carga
+                                            $("#resultado").html("<p align='center'><img src='{{ asset('images/loader.gif')}}'></p>");
+                                            },
+                                             error: function(){
+                                                alert("error petición ajax");
+                                                $("#datos").hide();
+                                            },
+                                            success: function(data)
+                                            {   
+                                                $("#datos").show();
+                                                                          $("#resultado").empty();
+
+                                                for (var i=0, total = data.length; i < total; i++) {
+                                                $("#cedula").html(data[i]["cedula"]);       
+                                                $("#nombre").html(data[i]["nombre"]);
+                                                $("#apellido").html(data[i]["apellido"]);
+                                                $("#direccion").html(data[i]["direccion"]);
+                                                $("#cedulatext").val(data[i]["cedula"]);
+                                                $("#nombretext").val(data[i]["nombre"]);
+                                                $("#apellidotext").val(data[i]["apellido"]);
+                                                $("#direcciontext").val(data[i]["direccion"]);
+
+                                                //alert(data[i]["cedula"]);
+                                            }
+                                            }
+                                        });
+                                }else{
+                                    alert("valor no aplica");
+                                }*/
+                                    
+                        });
  
      //lng = document.getElementsByName("milongitud")[0].value;
      //lat = document.getElementsByName("milatitud")[0].value;
@@ -256,7 +345,7 @@ var infoWindow = new google.maps.InfoWindow({map: map});
   }
 
   function placeMarker(latLng) {
-     alert("placemaker");
+     //alert("placemaker");
     var marker = new google.maps.Marker({map: map, position: latLng, draggable: true});
     measure.mvcLine.push(latLng);
     measure.mvcPolygon.push(latLng);
@@ -327,7 +416,7 @@ function display_polygon_line() {
 
 
 function compute_length() {
-  alert("compute");
+  //alert("compute");
     var length = 0;
     if (measure.mvcPolygon.getLength() > 1) {
         length = google.maps.geometry.spherical.computeLength(measure.line.getPath());

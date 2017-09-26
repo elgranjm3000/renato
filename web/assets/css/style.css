@@ -253,3 +253,18 @@ h1, h2, h3, h4, h5, h6 {
 .gallery img:hover {
 	opacity: 0.4;
 }
+#title1{
+	opacity: 0;
+}
+
+#title2{
+	opacity: 0;
+}
+
+#title3{
+	opacity: 0;
+}
+
+#titleprincipal{
+	opacity: 0;
+}
