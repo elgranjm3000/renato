@@ -39,30 +39,19 @@
 	<div class="container">
 		<div class="row centered mt mb">
 			<h1 id="title2">Seleccione su Vehiculo de Preferencia</h1>
-				<select id="carro_id">
-					<option></option>
-			      {% for carro in carros %}
-			      		<option  value="{{ carro.id }}">{{carro.marca}}</option>
-			      {% endfor %}
-				</select>
-			<!--<div class="col-lg-4 col-md-4 col-sm-4 gallery">
-				<a href="work.html"><img src="assets/img/portfolio/folio01.png" class="img-responsive"></a>
-			</div>
-			<div class="col-lg-4 col-md-4 col-sm-4 gallery">
-				<a href="work.html"><img src="assets/img/portfolio/folio02.png" class="img-responsive"></a>
-			</div>
-			<div class="col-lg-4 col-md-4 col-sm-4 gallery">
-				<a href="work.html"><img src="assets/img/portfolio/folio03.png" class="img-responsive"></a>
-			</div>
-			<div class="col-lg-4 col-md-4 col-sm-4 gallery">
-				<a href="work.html"><img src="assets/img/portfolio/folio04.png" class="img-responsive"></a>
-			</div>
-			<div class="col-lg-4 col-md-4 col-sm-4 gallery">
-				<a href="work.html"><img src="assets/img/portfolio/folio05.png" class="img-responsive"></a>
-			</div>
-			<div class="col-lg-4 col-md-4 col-sm-4 gallery">
-				<a href="work.html"><img src="assets/img/portfolio/folio06.png" class="img-responsive"></a>
-			</div>-->
+				
+
+				<div class="marcacarro">
+				{% for carro in carros %}
+					<div class="col-lg-3 col-md-3 col-sm-3 gallery ">
+						<img src="{{ asset(carro.ruta) }}" class="img-responsive" onclick="evento({{carro.id}})">
+					</div>			
+			 {% endfor %}
+				</div>
+
+<div id="datos"></div>
+				<div id="resultado"></div>
+				<div id="modelo"></div>
 
 
 		</div><! --/row -->
@@ -145,52 +134,6 @@ var length_mode = "distance";
   jQuery(document).ready(function(){
 
 
-  	$("#carro_id").change(function() {
-    alert(this.value);                            
-        var valor = this.value;
-                            var data = {id: valor};
-
-                        /*    if(valor != '')
-                                {
-                                    
-                                    $.ajax
-                                        ({
-                                            type: 'POST',
-                                            url: "",
-                                            data: data,
-                                            dataType: 'json',
-                                             beforeSend: function(){
-                                                //imagen de carga
-                                            $("#resultado").html("<p align='center'><img src='{{ asset('images/loader.gif')}}'></p>");
-                                            },
-                                             error: function(){
-                                                alert("error petición ajax");
-                                                $("#datos").hide();
-                                            },
-                                            success: function(data)
-                                            {   
-                                                $("#datos").show();
-                                                                          $("#resultado").empty();
-
-                                                for (var i=0, total = data.length; i < total; i++) {
-                                                $("#cedula").html(data[i]["cedula"]);       
-                                                $("#nombre").html(data[i]["nombre"]);
-                                                $("#apellido").html(data[i]["apellido"]);
-                                                $("#direccion").html(data[i]["direccion"]);
-                                                $("#cedulatext").val(data[i]["cedula"]);
-                                                $("#nombretext").val(data[i]["nombre"]);
-                                                $("#apellidotext").val(data[i]["apellido"]);
-                                                $("#direcciontext").val(data[i]["direccion"]);
-
-                                                //alert(data[i]["cedula"]);
-                                            }
-                                            }
-                                        });
-                                }else{
-                                    alert("valor no aplica");
-                                }*/
-                                    
-                        });
  
      //lng = document.getElementsByName("milongitud")[0].value;
      //lat = document.getElementsByName("milatitud")[0].value;
@@ -456,7 +399,63 @@ function compute_length() {
         document.getElementById('lineLength').innerHTML = '';
     }
 }
+
+
+function evento(id){
+	//alert(id);
+	 var valor = id;
+                            var data = {id: valor};
+
+                           if(valor != '')
+                                {
+                                    
+                                    $.ajax
+                                        ({
+                                            type: 'POST',
+                                            url: "{{ path('buscar_modelo') }}",
+                                            data: data,
+                                            dataType: 'json',
+                                             beforeSend: function(){
+                                                //imagen de carga
+                                                $(".marcacarro").hide();
+                                            $("#resultado").html("<p align='center'><img src='{{ asset('images/loader.gif')}}'></p>");
+                                            },
+                                             error: function(){
+                                                alert("error petición ajax");
+                                                $("#datos").hide();
+                                            },
+                                            success: function(data)
+                                            {   
+                                            	
+                                                $("#datos").show();
+                                                $("#resultado").empty();
+                                                $("#datos").empty();
+												$("#datos").append("<a onclick='select()'>Seleccionar Otra Marca</a>");
+                                                for (var i=0, total = data.length; i < total; i++) {
+
+                                                	var rutaimagen = data[i]["ruta"];
+
+                              $("#resultado").append("<div class='col-lg-3 col-md-3 col-sm-3 gallery'><img src='../"+rutaimagen+"' class='img-responsive'>"+data[i]["modelonombre"]+"</div>");
+
+                                               //alert(data[i]["ruta"]);
+                                            }
+                                            }
+                                        });
+                                }else{
+                                    alert("valor no aplica");
+                                }
+                                    
+                   
+	}
+
+
+	function select(){
+		$("#resultado").empty();
+		$("#datos").empty();
+		$(".marcacarro").show();
+	}
  </script>
+}
 
 <!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDaznzv0sICn4A8bWY0AmH_muSuYfxp3iw&libraries=places" 
   type="text/javascript" async defer></script>-->

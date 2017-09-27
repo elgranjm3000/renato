@@ -26,19 +26,20 @@ class DefaultController extends Controller
 
      
          $id = $request->request->get('id');
-        // $id = 2;
+         //$id = 1;
         
         $em = $this->getDoctrine()->getManager();
-        $datos = $em->getRepository('ViajeBundle:Modelo')->findById($id);
+        $datos = $em->getRepository('ViajeBundle:Modelo')->findBy(array('carro_id'=>$id));
 
     $generardatos = array();
         foreach($datos as $entity){
-            $localidad['cedula'] = $entity->getModelonombre();
+            $localidad['modelonombre'] = $entity->getModelonombre();
+            $localidad['ruta'] = $entity->getRuta();
             $generardatos[] = $localidad;
         }                             
-        //sleep(2);
+       //sleep(2);
         
-                                              
+           //  var_dump($generardatos);
             return new JsonResponse($generardatos);
     }
 }
