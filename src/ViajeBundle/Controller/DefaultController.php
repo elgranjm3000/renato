@@ -35,6 +35,7 @@ class DefaultController extends Controller
         foreach($datos as $entity){
             $localidad['modelonombre'] = $entity->getModelonombre();
             $localidad['ruta'] = $entity->getRuta();
+            $localidad['descripcion'] = $entity->getDescripcion();
             $generardatos[] = $localidad;
         }                             
        //sleep(2);

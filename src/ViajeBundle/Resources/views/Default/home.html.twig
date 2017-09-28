@@ -430,12 +430,12 @@ function evento(id){
                                                 $("#datos").show();
                                                 $("#resultado").empty();
                                                 $("#datos").empty();
-												$("#datos").append("<a onclick='select()'>Seleccionar Otra Marca</a>");
+												$("#datos").append("<a  onclick='select()'>Seleccionar Otra Marca</a>");
                                                 for (var i=0, total = data.length; i < total; i++) {
 
                                                 	var rutaimagen = data[i]["ruta"];
 
-                              $("#resultado").append("<div class='col-lg-3 col-md-3 col-sm-3 gallery'><img src='../"+rutaimagen+"' class='img-responsive'>"+data[i]["modelonombre"]+"</div>");
+                              $("#resultado").append("<div class='col-lg-3 col-md-3 col-sm-3 gallery'><img src='"+rutaimagen+"' class='img-responsive'><p> <b>MODELO: </b>"+data[i]["modelonombre"]+"</p><p>"+data[i]["descripcion"]+"</p></div>");
 
                                                //alert(data[i]["ruta"]);
                                             }
@@ -453,6 +453,7 @@ function evento(id){
 		$("#resultado").empty();
 		$("#datos").empty();
 		$(".marcacarro").show();
+
 	}
  </script>
 }
