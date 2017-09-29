@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 26-09-2017 a las 15:07:00
+-- Tiempo de generación: 29-09-2017 a las 14:38:39
 -- Versión del servidor: 5.7.19-0ubuntu0.16.04.1
 -- Versión de PHP: 7.0.22-0ubuntu0.16.04.1
 
@@ -28,18 +28,19 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `carro` (
   `id` int(11) NOT NULL,
-  `marca` varchar(255) COLLATE utf8_unicode_ci NOT NULL
+  `marca` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `ruta` varchar(255) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `carro`
 --
 
-INSERT INTO `carro` (`id`, `marca`) VALUES
-(1, 'CITROEN'),
-(2, 'RENAULT'),
-(3, 'DACIA RENAULT'),
-(4, 'PEUGEOT');
+INSERT INTO `carro` (`id`, `marca`, `ruta`) VALUES
+(1, 'CITROEN', 'carros/citroen.jpeg'),
+(2, 'RENAULT', 'carros/renault.png'),
+(3, 'DACIA RENAULT', 'carros/dacia.jpeg'),
+(4, 'PEUGEOT', 'carros/PEUGEOT.jpeg');
 
 -- --------------------------------------------------------
 
@@ -67,7 +68,13 @@ CREATE TABLE `modelo` (
 --
 
 INSERT INTO `modelo` (`id`, `modelonombre`, `tipo`, `categoria`, `consumo`, `descripcion`, `ruta`, `dia17`, `dia20`, `dia21`, `diaextra`, `carro_id`) VALUES
-(1, 'DS3', 'LUJOSO', 'ECONOMICO', 4.6, 'GPS INTEGRADO\r\nAsientos: 5 \r\nTamaño de la maletera: 285L', '', 1199, 1349, 1349, 32, 1);
+(1, 'DS3', 'LUJOSO', 'ECONOMICO', 4.6, 'GPS INTEGRADO\r\nAsientos: 5 \r\nTamaño de la maletera: 285L', 'modelos/ds3.jpeg', 1199, 1349, 1349, 32, 1),
+(2, 'DS4', '', '', 4.7, 'GPS INTEGRADO\r\nAsintos: 5\r\nTamaño de la maletera: 359L', 'modelos/ds4.jpeg', 1439, 1469, 1649, 34, 1),
+(3, 'DS5', 'LUJOSO', 'FAMILIAR', 7.6, 'GPS INTEGRADO\r\nAsintos: 5\r\nTamaño de la maletera: 468L', 'modelos/ds5.jpeg', 2549, 2549, 2549, 41, 1),
+(4, 'C3', 'ECONOMICO', '', 4.3, 'GPS INTEGRADO\r\nAsintos: 5\r\nTamaño de la maletera: 300L', 'modelos/c3.jpeg', 1079, 1199, 1199, 30, 1),
+(5, 'C3 PLUS', 'ECONOMICO', '', 4.3, 'GPS INTEGRADO\r\nAsintos: 5\r\nTamaño de la maletera: 300L', 'modelos/c3plus.jpeg', 1079, 1199, 199, 30, 1),
+(6, 'C4 CACTUS', 'ECONOMICO', '', 4.6, 'GPS INTEGRADO\r\nAsintos: 5\r\nTamaño de la maletera: 348L', 'modelos/c4cactuc.jpeg', 1319, 1499, 1499, 34, 1),
+(7, 'C4 PICASSO', 'ECONOMICO', 'FAMILIAR', 5, 'GPS INTEGRADO\r\nAsintos: 5\r\nTamaño de la maletera: 537L', 'modelos/c4picasso.jpg', 1599, 1599, 1599, 34, 1);
 
 --
 -- Índices para tablas volcadas
@@ -99,7 +106,7 @@ ALTER TABLE `carro`
 -- AUTO_INCREMENT de la tabla `modelo`
 --
 ALTER TABLE `modelo`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- Restricciones para tablas volcadas
 --
