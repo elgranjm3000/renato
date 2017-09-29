@@ -25,14 +25,15 @@
 
 	<div class="container">
 		<div class="row centered mt mb">
-			<h1 id="title1">Seleccione su Ruta de Preferencia</h1>
-	<input type="text" id="direccion" name="direccion" placeholder="Escribe para autocompletar..."/> 
+			<h1 id="title1">Seleccione su Ruta de Circuito</h1>
+	<input type="hidden" id="direccion" name="direccion" placeholder="Escribe para autocompletar..."/> 
 
    <div id="map_calculation_result_container">
                         <div id="lineLength"></div>
                         <div id="polyArea"></div>
                     </div>
-	<div id="map_canvas" class="map_canvas" style="margin-top:22px;width:100%;height:450px;box-shadow: 0px 1px 2px 0px rgba(185,184,184,0.75);"></div>
+	<div id="map_canvas" class="map_canvas" style="margin-top:22px;width:100%;height:600px;box-shadow: 0px 1px 2px 0px rgba(185,184,184,0.75);"></div>
+	<input type="hidden" name="direccion2" id="direccion2">
 
 		</div>
 	</div>
@@ -117,15 +118,15 @@
   
 {% block javascripts %}
 <script>
-var lat = null;
-var lng = null;
+var lat = 48.1260811;
+var lng = 4.133081;
 var map = null;
 var geocoder = null;
 var marker = null;
-
+//48.1260811,4.133081
 var map = null;
-var default_lat = 40.14528997427982;
-var default_lng = -2.9582043750000366;
+var default_lat = 48.1260811;
+var default_lng = 4.133081;
 var default_zoom = 7;
 var map_div = "map_canvas";
 var measure;
@@ -156,6 +157,26 @@ var length_mode = "distance";
  });
       
 });
+
+  var beaches = [
+        ['España', 40.46366700000001, -3.7492200000000366],
+        ['Portugal', 39.39987199999999, -8.224454000000037],
+        ['Andorra', 42.506285, 1.5218009999999822],
+        ['Francia', 46.227638, 2.213749000000007],
+        ['Alemania', 51.165691, 10.451526000000058],
+        ['Austria', 47.516231, 14.550072],
+        ['Dinamarca', 56.26392, 9.50178500000004],
+        ['Beneluxlaan, Utrecht, Países Bajos', 52.0727659, 5.098581400000057],
+        ['Finlandia', 61.92410999999999, 25.748151099999973],
+        ['Gran Bretaña, Reino Unido', 53.7190281, -2.0727838999999904],
+        ['Italia', 41.87194, 12.567379999999957],
+        ['Noruega', 60.47202399999999, 8.46894599999996],
+        ['Suiza', 46.818188, 8.227511999999933],
+        ['Albania', 41.153332, 20.168330999999966],
+        ['Belgica', 50.503887, 4.4699359999999615]
+
+      ];
+//   Bélgica, Bielorrusia, Bosnia y Herzegovina, Bulgaria, Chequia, Chipre, Ciudad del Vaticano, Croacia,  Eslovaquia, Eslovenia,  Estonia,  Grecia, Hungría, Irlanda, Islandia,  Letonia, Liechtenstein, Lituania, Luxemburgo, Macedonia, Malta, Moldavia, Mónaco, Montenegro,   , Polonia,  Reino Unido, Rumania, Rusia, San Marino, Serbia, Suecia,  Turquía, Ucrania. 
    
     function initialize() {
       
@@ -179,13 +200,13 @@ measure = {
       else
       {
         //Si no creamos el objeto con una latitud cualquiera como la de Mar del Plata, Argentina por ej
-         var latLng = new google.maps.LatLng(45.934173765303,7.0985534404756);
+         var latLng = new google.maps.LatLng(4.133081,48.1260811);
 //40.4381311,-3.819622,11
       }
       //Definimos algunas opciones del mapa a crear
        var myOptions = {
           center: latLng,//centro del mapa
-          zoom: 15,//zoom del mapa
+          zoom: 5,//zoom del mapa
           mapTypeId: google.maps.MapTypeId.ROADMAP //tipo de mapa, carretera, híbrido,etc
         };
         //creamos el mapa con las opciones anteriores y le pasamos el elemento div
@@ -195,16 +216,17 @@ measure = {
         marker = new google.maps.Marker({
             map: map,//el mapa creado en el paso anterior
             position: latLng,//objeto con latitud y longitud
-            draggable: true, //que el marcador se pueda arrastrar
+            draggable: false, //que el marcador se pueda arrastrar
             //icon: "{{ asset('/ico/indice.png') }}"
         });
         
+        setMarkers(map);
 
 
        //función que actualiza los input del formulario con las nuevas latitudes
        //Estos campos suelen ser hidden
  
-var infoWindow = new google.maps.InfoWindow({map: map});
+/*var infoWindow = new google.maps.InfoWindow({map: map});
         // Try HTML5 geolocation.
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(function(position) {
@@ -223,7 +245,7 @@ var infoWindow = new google.maps.InfoWindow({map: map});
           // Browser doesn't support Geolocation
           handleLocationError(false, infoWindow, map.getCenter());
           updatePosition(latLng);
-        }
+        }*/
        
          
  var input = document.getElementById('direccion');
@@ -249,7 +271,8 @@ var infoWindow = new google.maps.InfoWindow({map: map});
     function codeAddress() {
          
         //obtengo la direccion del formulario
-        var address = document.getElementById("direccion").value;
+        //var address = document.getElementById("direccion").value;
+        var address = document.getElementById("direccion2").value;
         //hago la llamada al geodecoder
         geocoder.geocode( { 'address': address}, function(results, status) {
          
@@ -261,7 +284,9 @@ var infoWindow = new google.maps.InfoWindow({map: map});
             marker.setPosition(results[0].geometry.location);
             //actualizo el formulario      
             updatePosition(results[0].geometry.location);
-             
+            
+            //alert(results[0].geometry.location);
+
 
             placeMarker(results[0].geometry.location);
             //Añado un listener para cuando el markador se termine de arrastrar
@@ -288,8 +313,8 @@ var infoWindow = new google.maps.InfoWindow({map: map});
   }
 
   function placeMarker(latLng) {
-     //alert("placemaker");
-    var marker = new google.maps.Marker({map: map, position: latLng, draggable: true});
+     //alert(latLng);
+    var marker = new google.maps.Marker({map: map, position: latLng, draggable: false});
     measure.mvcLine.push(latLng);
     measure.mvcPolygon.push(latLng);
     measure.mvcMarkers.push(marker);
@@ -299,7 +324,7 @@ var infoWindow = new google.maps.InfoWindow({map: map});
         measure.mvcPolygon.setAt(latLngIndex, evt.latLng);
     });
     google.maps.event.addListener(marker, "dragend", function() {
-        if (measure.mvcLine.getLength() > 1) {
+        if (measure.mvcLine.getLength() >= 0 ) {
             compute_length();
         }
     });
@@ -323,7 +348,7 @@ function display_polygon_line() {
             });
         }
 
-        if (measure.mvcPolygon.getLength() > 2) {
+        if (measure.mvcPolygon.getLength() >= 1) {
 
             if (measure.polygon != null)
             {
@@ -352,7 +377,7 @@ function display_polygon_line() {
             }
         }
     }
-    if (measure.mvcLine.getLength() > 1) {
+    if (measure.mvcLine.getLength() >= 1) {
         compute_length();
     }
 }
@@ -370,7 +395,7 @@ function compute_length() {
     }
 //    lM = document.forms["mb"].elements["mode"][0].checked;
 
-    if (length_mode === "distance") {
+   alert(length);
         var km = length / 1000;
         var feet = length * 3.2808399;
         var yards = length * 1.0936133;
@@ -383,21 +408,9 @@ function compute_length() {
         document.getElementById('lineLength').innerHTML = "<strong>Distancia total:</strong><br />" + length.toFixed(0) + unit + "<br />" + km.toFixed(3) + unit2
                 + "<br />" + feet.toFixed(0) + unit3 + "<br />" + yards.toFixed(0) + unit4 + "<br />" + miles.toFixed(3) + unit1;
         document.getElementById('polyArea').innerHTML = '';
-    }
-    else {
-        var km = area / (1000 * 1000);
-        var feet = area * 10.7639104;
-        var yards = area * 1.19599005;
-        var acres = area * 0.000247105381;
-        var unit = " metros&sup2;";
-        var unit1 = " acres";
-        var unit2 = " kilÃ³metros&sup2;";
-        var unit3 = " pies&sup2;";
-        var unit4 = " yardas&sup2;";
-        document.getElementById('polyArea').innerHTML = "<strong>Ãrea:</strong><br />" + area.toFixed(0) + unit + "<br />" + km.toFixed(3) + unit2
-                + "<br />" + feet.toFixed(0) + unit3 + "<br />" + yards.toFixed(0) + unit4 + "<br />" + acres.toFixed(3) + unit1;
-        document.getElementById('lineLength').innerHTML = '';
-    }
+
+    
+
 }
 
 
@@ -435,7 +448,7 @@ function evento(id){
 
                                                 	var rutaimagen = data[i]["ruta"];
 
-                              $("#resultado").append("<div class='col-lg-3 col-md-3 col-sm-3 gallery'><img src='"+rutaimagen+"' class='img-responsive'><p> <b>MODELO: </b>"+data[i]["modelonombre"]+"</p><p>"+data[i]["descripcion"]+"</p></div>");
+                              $("#resultado").append("<div class='col-lg-4 col-md-4 col-sm-4 gallery'>  <input type='radio' name='modelonombre' value='"+data[i]["descripcion"]+"' > <img src='"+rutaimagen+"' class='img-responsive'><p> <b>MODELO: </b>"+data[i]["modelonombre"]+"</p><p>"+data[i]["descripcion"]+"</p></div>");
 
                                                //alert(data[i]["ruta"]);
                                             }
@@ -455,6 +468,68 @@ function evento(id){
 		$(".marcacarro").show();
 
 	}
+
+	 function setMarkers(map) {
+        // Adds markers to the map.
+
+        // Marker sizes are expressed as a Size of X,Y where the origin of the image
+        // (0,0) is located in the top left of the image.
+
+        // Origins, anchor positions and coordinates of the marker increase in the X
+        // direction to the right and in the Y direction down.
+        var image = {
+          url: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+          // This marker is 20 pixels wide by 32 pixels high.
+          size: new google.maps.Size(20, 32),
+          // The origin for this image is (0, 0).
+          origin: new google.maps.Point(0, 0),
+          // The anchor for this image is the base of the flagpole at (0, 32).
+          anchor: new google.maps.Point(0, 32)
+        };
+        // Shapes define the clickable region of the icon. The type defines an HTML
+        // <area> element 'poly' which traces out a polygon as a series of X,Y points.
+        // The final coordinate closes the poly by connecting to the first coordinate.
+        var shape = {
+          coords: [1, 1, 1, 20, 18, 20, 18, 1],
+          type: 'poly'
+        };
+              var infowindow = new google.maps.InfoWindow();
+        for (var i = 0; i < beaches.length; i++) {
+          var beach = beaches[i];
+          var marker = new google.maps.Marker({
+            position: {lat: beach[1], lng: beach[2]},
+            map: map,
+            //icon: image,
+            //shape: shape,
+
+            title: beach[0],
+            zIndex: beach[3]
+          });
+
+         /* marker.addListener('click', function() {
+    map.setZoom(8);
+    map.setCenter(marker.getPosition());
+  });*/
+
+        google.maps.event.addListener(marker, 'click', (function(marker, i) {
+          return function() {
+            infowindow.setContent("<h1>"+beaches[i][0]+"</h1>");
+            infowindow.open(map, marker);
+            //alert(beaches[i][0]);
+             //document.getElementById('').innerHTML= "hola";
+              jQuery('#direccion2').val(beaches[i][0]);
+            codeAddress();
+              //placeMarker("("+beaches[i][1]+","+beaches[i][2]+")");
+          }
+        })(marker, i));
+
+
+
+        }
+
+       
+      }
+
  </script>
 }
 
