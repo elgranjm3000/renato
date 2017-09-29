@@ -335,8 +335,8 @@ measure = {
 
 function display_polygon_line() {
 
-
-    if (measure.mvcLine.getLength() > 1) {
+//alert("lineas");
+    if (measure.mvcLine.getLength() >= 1) {
         if (!measure.line) {
             measure.line = new google.maps.Polyline({
                 map: map,
@@ -395,7 +395,7 @@ function compute_length() {
     }
 //    lM = document.forms["mb"].elements["mode"][0].checked;
 
-   alert(length);
+   //alert(length);
         var km = length / 1000;
         var feet = length * 3.2808399;
         var yards = length * 1.0936133;
