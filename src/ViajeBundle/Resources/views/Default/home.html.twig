@@ -62,7 +62,20 @@
 	<div class="container">
 		<div class="row centered mt mb">
 			<h1 id="title3">Seleccione su Hotel de Preferencia</h1>
+          <select id="pais" name="pais">
+            <option>Seleccione</option>
+            {% for paises in pais %}
+              <option value="{{paises.id}}">{{paises.nombrepais}}</option>
+            {% endfor %}
+          </select>
 			
+
+      <div id="datoshoteles"></div>
+        <div id="resultadohoteles"></div>
+        <div id="modelohoteles"></div>
+
+
+    </div><! --/row -->
 			<!--<div class="col-lg-4 col-md-4 col-sm-4 gallery">
 				<a href="work.html"><img src="assets/img/portfolio/folio01.png" class="img-responsive"></a>
 			</div>
@@ -135,7 +148,56 @@ var length_mode = "distance";
   jQuery(document).ready(function(){
 
 
- 
+$("#pais" ).change(function() {
+  //alert($(this).children(":selected").html());
+  //alert(this.value);
+
+
+
+  //alert(id);
+   var valor = this.value;
+                            var data = {id: valor};
+
+                           if(valor != '')
+                                {
+                                    
+                                    $.ajax
+                                        ({
+                                            type: 'POST',
+                                            url: "{{ path('buscar_hoteles') }}",
+                                            data: data,
+                                            dataType: 'json',
+                                             beforeSend: function(){
+                                                //imagen de carga
+                                                //$(".marcacarro").hide();
+                                            $("#resultadohoteles").html("<p align='center'><img src='{{ asset('images/loader.gif')}}'></p>");
+                                            },
+                                             error: function(){
+                                                alert("error petición ajax");
+                                                $("#datoshoteles").hide();
+                                            },
+                                            success: function(data)
+                                            {   
+                                              
+                                                $("#datoshoteles").show();
+                                                $("#resultadohoteles").empty();
+                                                $("#datoshoteles").empty();
+                        //$("#datos").append("<a  onclick='select()'>Seleccionar Otra Marca</a>");
+                                                for (var i=0, total = data.length; i < total; i++) {
+
+                                                  //var rutaimagen = data[i]["ruta"];
+
+                              $("#resultadohoteles").append("<div class='col-lg-4 col-md-4 col-sm-4 gallery'> "+data[i]["ubicacion"]+"</div>");
+
+                                               //alert(data[i]["ruta"]);
+                                            }
+                                            }
+                                        });
+                                }else{
+                                    alert("valor no aplica");
+                                }
+});
+
      //lng = document.getElementsByName("milongitud")[0].value;
      //lat = document.getElementsByName("milatitud")[0].value;
      //obtenemos los valores en caso de tenerlos en un formulario ya guardado en la base de datos
@@ -144,6 +206,7 @@ var length_mode = "distance";
      //Asignamos al evento click del boton la funcion codeAddress
     
      //Inicializamos la función de google maps una vez el DOM este cargado
+
     initialize();
     // Create the search box and link it to the UI element.
         var input = document.getElementById('direccion');
@@ -531,7 +594,6 @@ function evento(id){
       }
 
  </script>
-}
 
 <!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDaznzv0sICn4A8bWY0AmH_muSuYfxp3iw&libraries=places" 
   type="text/javascript" async defer></script>-->

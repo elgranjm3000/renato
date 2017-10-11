@@ -4,3 +4,6 @@ viaje_homepage:
 buscar_modelo:
     path:     /buscarmodelo
     defaults: { _controller: ViajeBundle:Default:datos }
+buscar_hoteles:
+    path:     /hoteles
+    defaults: { _controller: ViajeBundle:Default:hoteles }
