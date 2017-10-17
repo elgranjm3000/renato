@@ -16,7 +16,7 @@ class Modelo
 
 
      /**
-     * @ORM\OneToMany(targetEntity="Presupuesto", mappedBy="modelo")
+     * @ORM\OneToMany(targetEntity="Presupuesto", mappedBy="carro")
      */
     protected $presupuesto;
 
@@ -367,86 +367,5 @@ class Modelo
     {
         return $this->diaextra;
     }
-
-    /**
-     * Set carroId
-     *
-     * @param integer $carroId
-     *
-     * @return Modelo
-     */
-    public function setCarroId($carroId)
-    {
-        $this->carro_id = $carroId;
-
-        return $this;
-    }
-
-    /**
-     * Get carroId
-     *
-     * @return integer
-     */
-    public function getCarroId()
-    {
-        return $this->carro_id;
-    }
-
-    /**
-     * Add presupuesto
-     *
-     * @param \ViajeBundle\Entity\Presupuesto $presupuesto
-     *
-     * @return Modelo
-     */
-    public function addPresupuesto(\ViajeBundle\Entity\Presupuesto $presupuesto)
-    {
-        $this->presupuesto[] = $presupuesto;
-
-        return $this;
-    }
-
-    /**
-     * Remove presupuesto
-     *
-     * @param \ViajeBundle\Entity\Presupuesto $presupuesto
-     */
-    public function removePresupuesto(\ViajeBundle\Entity\Presupuesto $presupuesto)
-    {
-        $this->presupuesto->removeElement($presupuesto);
-    }
-
-    /**
-     * Get presupuesto
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getPresupuesto()
-    {
-        return $this->presupuesto;
-    }
-
-    /**
-     * Set carro
-     *
-     * @param \ViajeBundle\Entity\Carro $carro
-     *
-     * @return Modelo
-     */
-    public function setCarro(\ViajeBundle\Entity\Carro $carro = null)
-    {
-        $this->carro = $carro;
-
-        return $this;
-    }
-
-    /**
-     * Get carro
-     *
-     * @return \ViajeBundle\Entity\Carro
-     */
-    public function getCarro()
-    {
-        return $this->carro;
-    }
 }
+

@@ -139,29 +139,7 @@ class Presupuesto
         return $this->hotel;
     }
 
-    /**
-     * Set carrospresupuesto
-     *
-     * @param \ViajeBundle\Entity\Carro $carrospresupuesto
-     *
-     * @return Presupuesto
-     */
-    public function setCarrospresupuesto(\ViajeBundle\Entity\Carro $carrospresupuesto = null)
-    {
-        $this->carrospresupuesto = $carrospresupuesto;
-
-        return $this;
-    }
-
-    /**
-     * Get carrospresupuesto
-     *
-     * @return \ViajeBundle\Entity\Carro
-     */
-    public function getCarrospresupuesto()
-    {
-        return $this->carrospresupuesto;
-    }
+    
 
     /**
      * Set hotelespresupuesto
@@ -185,5 +163,29 @@ class Presupuesto
     public function getHotelespresupuesto()
     {
         return $this->hotelespresupuesto;
+    }
+
+    /**
+     * Set carrospresupuesto
+     *
+     * @param \ViajeBundle\Entity\Modelo $carrospresupuesto
+     *
+     * @return Presupuesto
+     */
+    public function setCarrospresupuesto(\ViajeBundle\Entity\Modelo $carrospresupuesto = null)
+    {
+        $this->carrospresupuesto = $carrospresupuesto;
+
+        return $this;
+    }
+
+    /**
+     * Get carrospresupuesto
+     *
+     * @return \ViajeBundle\Entity\Modelo
+     */
+    public function getCarrospresupuesto()
+    {
+        return $this->carrospresupuesto;
     }
 }

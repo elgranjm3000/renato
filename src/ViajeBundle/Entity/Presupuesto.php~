@@ -44,7 +44,7 @@ class Presupuesto
 
 
     /**
-     * @ORM\ManyToOne(targetEntity="Carro", inversedBy="presupuesto")
+     * @ORM\ManyToOne(targetEntity="Modelo", inversedBy="presupuesto")
      * @ORM\JoinColumn(name="vehiculo", referencedColumnName="id")
      */
     protected $carrospresupuesto;
@@ -138,5 +138,30 @@ class Presupuesto
     {
         return $this->hotel;
     }
-}
 
+    
+
+    /**
+     * Set hotelespresupuesto
+     *
+     * @param \ViajeBundle\Entity\Hotel $hotelespresupuesto
+     *
+     * @return Presupuesto
+     */
+    public function setHotelespresupuesto(\ViajeBundle\Entity\Hotel $hotelespresupuesto = null)
+    {
+        $this->hotelespresupuesto = $hotelespresupuesto;
+
+        return $this;
+    }
+
+    /**
+     * Get hotelespresupuesto
+     *
+     * @return \ViajeBundle\Entity\Hotel
+     */
+    public function getHotelespresupuesto()
+    {
+        return $this->hotelespresupuesto;
+    }
+}

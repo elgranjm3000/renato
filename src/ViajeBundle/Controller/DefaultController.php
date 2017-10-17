@@ -21,7 +21,7 @@ class DefaultController extends Controller
             //die("hola");
     $ip=$this->getDoctrine()->getEntityManager();  
                         $presupuesto = new presupuesto();                       
-                        $presupuesto->setCarrospresupuesto($ip->getReference('ViajeBundle:Carro',$_POST['vehiculos']));
+                        $presupuesto->setCarrospresupuesto($ip->getReference('ViajeBundle:Modelo',$_POST['vehiculos']));
                         $presupuesto->setHotelespresupuesto($ip->getReference('ViajeBundle:Hotel',$_POST['estrellavalueguardar']));
                         $presupuesto->setKilometros($_POST['km']);                      
                         $em=$this->getDoctrine()->getManager();

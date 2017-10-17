@@ -20,15 +20,12 @@ class Carro
     protected $modelo;
 
 
-     /**
-     * @ORM\OneToMany(targetEntity="Presupuesto", mappedBy="carro")
-     */
-    protected $presupuesto;
+    
  
     public function __construct()
     {
         $this->modelo = new ArrayCollection();
-        $this->presupuesto = new ArrayCollection();
+        
     }
 
 
