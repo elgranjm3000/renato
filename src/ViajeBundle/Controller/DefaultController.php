@@ -29,7 +29,7 @@ class DefaultController extends Controller
                         $em->flush();
 
 
-            return $this->redirect($this->generateUrl('reportes_hoteles', array('name' => $presupuesto->getId())));
+            return $this->redirect($this->generateUrl('reportes_hoteles', array('id' => $presupuesto->getId())));
 
         }
     	 $em = $this->getDoctrine()->getManager();
