@@ -3,6 +3,7 @@
 namespace ViajeBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Hotel
@@ -12,6 +13,17 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Hotel
 {
+
+     /**
+     * @ORM\OneToMany(targetEntity="Presupuesto", mappedBy="hotel")
+     */
+    protected $presupuestoh;
+ 
+    public function __construct()
+    {
+        
+        $this->presupuestoh = new ArrayCollection();
+    }
     /**
      * @var int
      *

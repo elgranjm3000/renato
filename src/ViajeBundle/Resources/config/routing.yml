@@ -7,3 +7,6 @@ buscar_modelo:
 buscar_hoteles:
     path:     /hoteles
     defaults: { _controller: ViajeBundle:Default:hoteles }
+reportes_hoteles:
+    path:     /reportes/{id}
+    defaults: { _controller: ViajeBundle:Default:reporte }

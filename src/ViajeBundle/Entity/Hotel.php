@@ -3,6 +3,7 @@
 namespace ViajeBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Hotel
@@ -12,6 +13,17 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Hotel
 {
+
+     /**
+     * @ORM\OneToMany(targetEntity="Presupuesto", mappedBy="hotel")
+     */
+    protected $presupuestoh;
+ 
+    public function __construct()
+    {
+        
+        $this->presupuestoh = new ArrayCollection();
+    }
     /**
      * @var int
      *
@@ -243,5 +255,39 @@ class Hotel
     public function getCiudadhotel()
     {
         return $this->ciudadhotel;
+    }
+
+    /**
+     * Add presupuestoh
+     *
+     * @param \ViajeBundle\Entity\Presupuesto $presupuestoh
+     *
+     * @return Hotel
+     */
+    public function addPresupuestoh(\ViajeBundle\Entity\Presupuesto $presupuestoh)
+    {
+        $this->presupuestoh[] = $presupuestoh;
+
+        return $this;
+    }
+
+    /**
+     * Remove presupuestoh
+     *
+     * @param \ViajeBundle\Entity\Presupuesto $presupuestoh
+     */
+    public function removePresupuestoh(\ViajeBundle\Entity\Presupuesto $presupuestoh)
+    {
+        $this->presupuestoh->removeElement($presupuestoh);
+    }
+
+    /**
+     * Get presupuestoh
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPresupuestoh()
+    {
+        return $this->presupuestoh;
     }
 }

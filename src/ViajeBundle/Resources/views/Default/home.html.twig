@@ -62,11 +62,21 @@
 	<div class="container">
 		<div class="row centered mt mb">
 			<h1 id="title3">Seleccione su Hotel de Preferencia</h1>
-          <select id="pais" name="pais">
+          <!--<select id="pais" name="pais" class="form-control" style="width:30%;margin-left:30%">
             <option>Seleccione</option>
             {% for paises in pais %}
               <option value="{{paises.id}}">{{paises.nombrepais}}</option>
             {% endfor %}
+          </select>-->
+
+          <select id="estrellavalue" name="estrellavalue" class="form-control" style="width:30%;margin-left:30%">
+            <option>Seleccione</option>            
+              <option value="1">1 ESTRELLA</option>
+              <option value="2">2 ESTRELLA</option>
+              <option value="3">3 ESTRELLA</option>
+              <option value="4">4 ESTRELLA</option>
+              <option value="5">5 ESTRELLA</option>
+            
           </select>
 			
 
@@ -94,7 +104,14 @@
 			<div class="col-lg-4 col-md-4 col-sm-4 gallery">
 				<a href="work.html"><img src="assets/img/portfolio/folio06.png" class="img-responsive"></a>
 			</div>-->
+<form method="post">
+<input type="text" name="km" id="km">
+<input type="text" name="vehiculos" id="vehiculos">
+<input type="text" name="estrellavalueguardar" id="estrellavalueguardar">
 
+<button type="submit" class="btn btn-primary" style="width:30%;margin-left:30%">
+Cotizar</button>
+</form>
 
 		</div><! --/row -->
 	</div><! --/container -->
@@ -148,7 +165,7 @@ var length_mode = "distance";
   jQuery(document).ready(function(){
 
 
-$("#pais" ).change(function() {
+$("#estrellavalue" ).change(function() {
   //alert($(this).children(":selected").html());
   //alert(this.value);
 
@@ -187,7 +204,7 @@ $("#pais" ).change(function() {
 
                                                   //var rutaimagen = data[i]["ruta"];
 
-                              $("#resultadohoteles").append("<div class='col-lg-4 col-md-4 col-sm-4 gallery'> "+data[i]["ubicacion"]+"</div>");
+                              $("#resultadohoteles").append("<div class='hoteles col-lg-4 col-md-4 col-sm-4 gallery'> <input type='radio' name='hoteltipo[]' onclick='estrellanombre(this)' value='"+data[i]["id"]+"' >" +data[i]["ubicacion"]+" <br>"+data[i]["estrella"]+" <br>LUGAR: "+data[i]["ciudad"]+"</div>");
 
                                                //alert(data[i]["ruta"]);
                                             }
@@ -472,6 +489,7 @@ function compute_length() {
                 + "<br />" + feet.toFixed(0) + unit3 + "<br />" + yards.toFixed(0) + unit4 + "<br />" + miles.toFixed(3) + unit1;
         document.getElementById('polyArea').innerHTML = '';
 
+        document.getElementById('km').value = km;
     
 
 }
@@ -511,7 +529,7 @@ function evento(id){
 
                                                 	var rutaimagen = data[i]["ruta"];
 
-                              $("#resultado").append("<div class='col-lg-4 col-md-4 col-sm-4 gallery'>  <input type='radio' name='modelonombre' value='"+data[i]["descripcion"]+"' > <img src='"+rutaimagen+"' class='img-responsive'><p> <b>MODELO: </b>"+data[i]["modelonombre"]+"</p><p>"+data[i]["descripcion"]+"</p></div>");
+                              $("#resultado").append("<div class='col-lg-4 col-md-4 col-sm-4 gallery'>  <input type='radio' onclick='modelonombre(this)' name='modelonombre[]' value='"+data[i]["id"]+"' > <img src='"+rutaimagen+"' class='img-responsive'><p> <b>MODELO: </b>"+data[i]["modelonombre"]+"</p><p>"+data[i]["descripcion"]+"</p></div>");
 
                                                //alert(data[i]["ruta"]);
                                             }
@@ -531,6 +549,15 @@ function evento(id){
 		$(".marcacarro").show();
 
 	}
+  function modelonombre(valor){
+    //alert(valor.value);
+    document.getElementById('vehiculos').value = valor.value;
+  }
+
+  function estrellanombre(valor){
+    //alert(valor.value);
+    document.getElementById('estrellavalueguardar').value = valor.value;
+  }
 
 	 function setMarkers(map) {
         // Adds markers to the map.
