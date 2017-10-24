@@ -1,29 +1,29 @@
 {% extends 'template.html.twig' %}
 {% block body %}
-<section id="home">
-	<div id="headerwrap">
-	    <div class="container">
-			<div class="row">
-				<div class="col-lg-6 col-lg-offset-3" id="titleprincipal">
-					<h4>VIAJE CON NOSOTRO</h4>
-					<h1>DE FORMA SEGURA</h1>
-					
-				</div>
-			</div><! --/row -->
-	    </div> <!-- /container -->
-	</div><! --/headerwrap -->
-
-	<div id="headerwrap2" >
-	    <div class="container">
-			<div class="row ">
-				
-			</div><! --/row -->
-	    </div> <!-- /container -->
-	</div><! --/headerwrap -->
-	</section>
-	<section id="works"></section>
-
+<div id="headerwrap">
+  <div class="row centered mt mb">
+      <h1 id="title1">VIAJE CON NOSOTROS</h1>
+      <h4 id="title1">DE FORMA SEGURA</h4>
+  </div>
+</div>
+<div id="headerwrap2">
+</div>
 	<div class="container">
+  <div class="row centered mt mb">
+      <h1 id="title1">Realize su presupuesto con nosotros</h1>
+  </div>
+  <form method="post">
+      <div class="row centered mt mb">
+            <div class=" col-md-offset-3 col-md-3">
+              <label>Cantidad de Personas</label>
+              <input type="number" id = "cantidadpersona" name="cantidadpersona" class="form-control">
+            </div>
+            <div class="col-md-3">
+            <label>Cantidad de Dias</label>
+              <input type="number" id="cantidaddias" name="cantidaddias" class="form-control">
+            </div>
+      </div>
+
 		<div class="row centered mt mb">
 			<h1 id="title1">Seleccione su Ruta de Circuito</h1>
 	<input type="hidden" id="direccion" name="direccion" placeholder="Escribe para autocompletar..."/> 
@@ -104,43 +104,19 @@
 			<div class="col-lg-4 col-md-4 col-sm-4 gallery">
 				<a href="work.html"><img src="assets/img/portfolio/folio06.png" class="img-responsive"></a>
 			</div>-->
-<form method="post">
-<input type="text" name="km" id="km">
-<input type="text" name="vehiculos" id="vehiculos">
-<input type="text" name="estrellavalueguardar" id="estrellavalueguardar">
 
-<button type="submit" class="btn btn-primary" style="width:30%;margin-left:30%">
+<input type="hidden" name="km" id="km">
+<input type="hidden" name="vehiculos" id="vehiculos">
+<input type="hidden" name="estrellavalueguardar" id="estrellavalueguardar">
+
+<button type="submit" id="cotizar" class="btn btn-primary" style="width:30%;margin-left:30%">
 Cotizar</button>
 </form>
 
 		</div><! --/row -->
 	</div><! --/container -->
 	
-	<div id="social">
-		<div class="container">
-			<div class="row centered">
-				<div class="col-lg-2">
-					<a href="#"><i class="fa fa-dribbble"></i></a>
-				</div>
-				<div class="col-lg-2">
-					<a href="#"><i class="fa fa-facebook"></i></a>
-				</div>
-				<div class="col-lg-2">
-					<a href="#"><i class="fa fa-twitter"></i></a>
-				</div>
-				<div class="col-lg-2">
-					<a href="#"><i class="fa fa-linkedin"></i></a>
-				</div>
-				<div class="col-lg-2">
-					<a href="#"><i class="fa fa-instagram"></i></a>
-				</div>
-				<div class="col-lg-2">
-					<a href="#"><i class="fa fa-tumblr"></i></a>
-				</div>
-			
-			</div><! --/row -->
-		</div><! --/container -->
-	</div><! --/social -->
+	
 
 
 {% endblock %}
@@ -164,12 +140,39 @@ var length_mode = "distance";
 
   jQuery(document).ready(function(){
 
+$("#cotizar" ).click(function() {
+
+    if($('#cantidadpersona').val() == ''){
+        alert("INDIQUE CANTIDAD DE PERSONAS");
+        return false;
+    }
+     if($('#cantidaddias').val() == ''){
+        alert("INDIQUE CANTIDAD DE DIAS");
+        return false;
+    }
+
+    if($('#km').val() == ''){
+        alert("SELECCIONE SU CIRCUITO");
+        return false;
+    }
+    if($('#vehiculos').val() == ''){
+        alert("SELECCIONE SU VEHICULO");
+        return false;
+    }
+    if($('#estrellavalueguardar').val() == ''){
+        alert("SELECCIONE SU HOTEL");
+        return false;
+      }
+   
+     
+    
+});
 
 $("#estrellavalue" ).change(function() {
   //alert($(this).children(":selected").html());
   //alert(this.value);
 
-
+$("#estrellavalueguardar" ).val('');
 
   //alert(id);
    var valor = this.value;
@@ -547,6 +550,7 @@ function evento(id){
 		$("#resultado").empty();
 		$("#datos").empty();
 		$(".marcacarro").show();
+    $("#vehiculos").val('');
 
 	}
   function modelonombre(valor){

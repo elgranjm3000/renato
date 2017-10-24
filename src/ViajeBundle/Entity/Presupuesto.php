@@ -31,6 +31,20 @@ class Presupuesto
     /**
      * @var int
      *
+     * @ORM\Column(name="personas", type="integer")
+     */
+    private $personas;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="dias", type="integer")
+     */
+    private $dias;
+
+    /**
+     * @var int
+     *
      * @ORM\Column(name="vehiculo", type="integer")
      */
     private $vehiculo;
@@ -187,5 +201,53 @@ class Presupuesto
     public function getCarrospresupuesto()
     {
         return $this->carrospresupuesto;
+    }
+
+    /**
+     * Set personas
+     *
+     * @param integer $personas
+     *
+     * @return Presupuesto
+     */
+    public function setPersonas($personas)
+    {
+        $this->personas = $personas;
+
+        return $this;
+    }
+
+    /**
+     * Get personas
+     *
+     * @return integer
+     */
+    public function getPersonas()
+    {
+        return $this->personas;
+    }
+
+    /**
+     * Set dias
+     *
+     * @param integer $dias
+     *
+     * @return Presupuesto
+     */
+    public function setDias($dias)
+    {
+        $this->dias = $dias;
+
+        return $this;
+    }
+
+    /**
+     * Get dias
+     *
+     * @return integer
+     */
+    public function getDias()
+    {
+        return $this->dias;
     }
 }

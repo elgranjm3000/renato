@@ -1,8 +1,139 @@
-<pdf>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pdf SYSTEM "%resources%/dtd/doctype.dtd">
+<pdf title="PRESUPUESTO">
     <dynamic-page>
+
+   
+        <placeholders>
+         <watermark>
+                <!-- rotate can have absolute values (45deg - in degrees, 0.123 - in radians) or relative values ("diagonally" and "-diagonally" - angle between diagonal and base side of the page) -->
+                <div  alpha="0.2">
+                    
+                     <img src="{{ pdf_image('ViajeBundle:markes.png') }}" width="100%" />
+                </div>
+            </watermark>
+        	<header>
+        			<div height="20px" width="100%">
+        					<p>{{ "now"|date("d/m/Y") }}</p>
+        			</div>
+        	</header>
+        	<footer>
+        		<div height="50px" width="100%">
+        					<p>Calle las Begonias  415, Edificio Begonias, Piso 11, San Isidro, Lima 27 (PERU) -  Tel.: +511 000 0000 -  informacion@intercitytours.com - www.intercitytours.ch</p>
+        			</div>
+        	</footer>
+
+		</placeholders>
     {% for detalles in datos %}
-       		<p>CANTIDAD DE KILOMETROS: {{ detalles.kilometros }}</p>
-       		<p>VEHICULO ELEGIDO:  {{ detalles.carrospresupuesto.modelonombre }}</p>
+    <h1>Presente</h1>
+    		<p text-align="justify">
+    				Un cordial saludo de Intercity Tours GmbH, empresa Suiza dedicada a servicios turísticos por Europa. Visite nuestra web <a href="http://www.intercitytours.ch">www.intercitytours.ch</a> “Esta cotización tiene vigencia de 7 días después de haber sido emitida” El precio del paquete ofrece los siguientes servicios:
+
+    		</p>
+
+    <h1>Resumen del Plan de Viajes</h1>
+    <table width="50%">
+    	<tr>
+    		<td >Cantidad Aproximada de Kilometros</td><td>{{ detalles.kilometros|number_format(2, '.', ',') }}</td>
+    	</tr>
+    	<tr>
+    	<td>
+    		Total de Dias
+    	</td>
+    	<td>
+    		{{ detalles.dias }}
+    	</td>
+    	</tr>
+    </table>
+
+    <h1>Auto: {{ detalles.carrospresupuesto.carro.marca }}</h1>
+
+    <ul>
+    	<li>
+    		Modelo: {{ detalles.carrospresupuesto.modelonombre }}
+    	</li>
+    	<li>
+    		Tipo: {{ detalles.carrospresupuesto.tipo }}
+    	</li>
+    	<li>
+    		Categoria: {{ detalles.carrospresupuesto.categoria }}
+    	</li>
+    	<li>
+    		Consumo: {{ detalles.carrospresupuesto.consumo }}
+    	</li>
+    	<li>
+    		Descripcion: {{ detalles.carrospresupuesto.descripcion }}
+    	</li>
+
+    	<li>
+    		Costo: 
+    		{% if detalles.dias <= 17 %}
+    			{{ detalles.carrospresupuesto.dia17 }}
+    		{% elseif detalles.dias > 17 and detalles.dias <= 20 %}
+				{{ detalles.carrospresupuesto.dia20 }}
+			{% elseif detalles.dias > 20 and detalles.dias <= 21 %}
+				{{ detalles.carrospresupuesto.dia21 }}
+			{% else %}
+				{% set valortotal = detalles.carrospresupuesto.diaextra * detalles.dias %}
+				{% set valoradiccional =  detalles.carrospresupuesto.dia21 + valortotal %}
+				{{ valoradiccional }}
+
+    		{% endif %}
+
+    	</li>
+    </ul>
+
+    <h1>Hotel: {{ detalles.hotelespresupuesto.ubicacion }} </h1>
+    <ul>
+    	<li>
+    		Ciudad: {{ detalles.hotelespresupuesto.ciudad.nombreciudad }}
+    	</li>
+    	<li>
+    		Estrella: {{ detalles.hotelespresupuesto.estrella }}
+
+    	</li>
+    	<li>
+    		Tarifa Alta: {{ detalles.hotelespresupuesto.talta }}
+
+    	</li>
+    	<li>
+    		Tarifa Baja: {{ detalles.hotelespresupuesto.tbaja }}
+
+    	</li>
+    </ul>
+
+    <p color="red" text-align="justify">
+    	IMPORTANTE - Ninguna arrendadora de carros ofrece:      *El carro nuevo cero km, lo cual es una seguridad.  No es un auto usado. *El carro es último modelo, del año o inclusive del próximo año. * El combustible y peajes son totalmente ilimitados, así como el kilometraje, lo que te hará circular sin temor a excederte el límite de kilómetros que te indicaron.  Con la arrendadora, si te excedieras, cargará en tu tarjeta de crédito los kms extras.  *Cualquier persona que tenga la licencia de conducir al día puede manejar; la arrendadora te cobrará por cada chofer extra.  *El GPS es externo al carro, te cobrarán por alquilártelo; en nuestros carros, el GPS viene incluido, no cobramos extra.  *El seguro del carro es ilimitado y sin deducibles/primas (no hay pagos que hacer en caso de siniestro). *Con Intercity Tours, no dejas una tarjeta de crédito de garantía. *Con la arrendadora, ellos cargarán a tu tarjeta de crédito un monto para asegurarse que en caso de siniestro, podrán cobrarte la reparación; esto hace que disminuya el crédito de tu tarjeta.  *En caso de emergencia vehicular, nuestra atención es las 24 horas.  *Desde Lima hacemos seguimiento de tu viaje, te puedes contactar con nosotros 24 horas al día.  *Los servicios del operador suizo INTERCITY TOURS GmbH son únicos en el mundo.
+    </p>
+
+    <h2>¿Qué incluye nuestra cotizacion?</h2>
+    <ul>
+    	<li>sesoramiento en el diseño de la ruta</li>
+		<li>Auto nuevo 0 kms, último modelo (Peugeot – Citroen – Renault) </li>
+		<li>Todos los hoteles / hostales / apart hotel</li>
+		<li>Abastecimiento ilimitado de combustible y todos peajes</li>
+		<li>Kilometraje ilimitado</li>
+		<li>GPS incorporado al carro</li>
+		<li>Recoger el carro en un país y dejarlo en otro</li>
+		<li>Traslados aeropuerto-estación de Intercity en aeropuerto- aeropuerto</li>
+		<li>Seguro Schengen, de asistencia médica, hasta por 30,000 euros (se puede solicitar mayor cobertura) </li>
+		<li>Modem para Wifi hasta 3GB para 5 equipos a la vez.  Se puede solicitar más GB.</li>
+		<li>Seguro ilimitado de auto sin franquicias /deducible (sin pagos alguno en caso de siniestro)</li>
+		<li>Todos pueden manejar sin costo adicional</li>
+		<li>Asistencia vehicular 24 horas/7 días</li>
+		<li>Seguimiento al viaje, desde Lima</li>
+    </ul>
+
+    <h2>Nuestras cotizaciones no incluyen</h2>
+    <ul>
+    	<li>Pasajes aéreos ni impuestos</li>
+		<li>Tasas municipales de cada ciudad</li>
+		<li>Trámites de visas, si se requirieran</li>
+		<li>Gastos personales ni servicios no detallados</li>
+		<li>Excursiones, entradas ni propinas</li>
+		<li>Desayunos, parqueos (a menos que los hoteles lo ofrezcan incluidos en el precio)</li>
+    </ul>
+       	
      {% endfor %}
     </dynamic-page>
 </pdf>

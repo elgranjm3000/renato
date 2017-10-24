@@ -23,7 +23,9 @@ class DefaultController extends Controller
                         $presupuesto = new presupuesto();                       
                         $presupuesto->setCarrospresupuesto($ip->getReference('ViajeBundle:Modelo',$_POST['vehiculos']));
                         $presupuesto->setHotelespresupuesto($ip->getReference('ViajeBundle:Hotel',$_POST['estrellavalueguardar']));
-                        $presupuesto->setKilometros($_POST['km']);                      
+                        $presupuesto->setKilometros($_POST['km']);
+                        $presupuesto->setPersonas($_POST['cantidadpersona']);
+                        $presupuesto->setDias($_POST['cantidaddias']);                      
                         $em=$this->getDoctrine()->getManager();
                         $em->persist($presupuesto);        
                         $em->flush();
@@ -122,6 +124,14 @@ $products = $query->getResult();
 
   
 public function reporteAction(Request $request,$id){
+
+    // Vamos a mostrar un PDF
+header('Content-type: application/pdf');
+
+// Se llamará downloaded.pdf
+header('Content-Disposition: attachment; filename="downloaded.pdf"');
+
+
 
 
         $em = $this->getDoctrine()->getManager();
